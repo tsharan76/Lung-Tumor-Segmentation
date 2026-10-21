@@ -14,15 +14,12 @@ class LungDataset(torch.utils.data.Dataset):
     def extract_files(root):
         """
         Extract the paths to all slices given the root path (ends with train or val)
+        Sorted so the order is deterministic: weights built from one instance
+        stay aligned with every other instance.
         """
-        files = []
-
         slice_path = root / "data"  # Get the slices for all subjects
 
-        for slice in slice_path.glob("*"):
-            files.append(slice)
-
-        return files
+        return sorted(slice_path.glob("*"))
 
     @staticmethod
     def change_img_to_label_path(path):
